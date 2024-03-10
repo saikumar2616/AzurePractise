@@ -1,0 +1,9 @@
+{
+	"name": "SaikaADFInstance",
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "6af33cdc-32e0-4f96-ae3b-18069775297d",
+		"tenantId": "125f361d-1542-4e88-8224-a6cc09689563"
+	}
+}
