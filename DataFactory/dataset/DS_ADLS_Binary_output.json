@@ -1,0 +1,22 @@
+{
+	"name": "DS_ADLS_Binary_output",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SaiDataLake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "data.csv",
+				"folderPath": "output",
+				"fileSystem": "exisitingfiles"
+			},
+			"compression": {
+				"type": "gzip"
+			}
+		}
+	}
+}
