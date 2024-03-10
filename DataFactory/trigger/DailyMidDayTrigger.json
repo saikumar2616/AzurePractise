@@ -2,8 +2,18 @@
 	"name": "DailyMidDayTrigger",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Stopped",
-		"pipelines": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "DynamicCopy",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"fileName": "data"
+				}
+			}
+		],
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
