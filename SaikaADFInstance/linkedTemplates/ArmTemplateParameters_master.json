@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "SaikaADFInstance"
+		},
+		"SaiDataLake_accountKey": {
+			"value": ""
+		},
+		"ssk2616_connectionString": {
+			"value": ""
+		},
+		"LS_ADLS_accountKey": {
+			"value": ""
+		},
+		"LS_Sql_connectionString": {
+			"value": ""
+		},
+		"SaiDataLake_properties_typeProperties_url": {
+			"value": "https://sskdatalake.dfs.core.windows.net/"
+		},
+		"ADLSEventTrigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/0fc4d8e8-8f21-4bd6-a59d-692b2a87791e/resourceGroups/SaiResourceGroup/providers/Microsoft.Storage/storageAccounts/sskdatalake"
+		},
+		"DailyMidDayTrigger_properties_DynamicCopy_parameters_fileName": {
+			"value": "data"
+		},
+		"LS_ADLS_properties_typeProperties_url": {
+			"value": "https://sskdatalake.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
