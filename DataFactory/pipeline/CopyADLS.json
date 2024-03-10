@@ -19,7 +19,7 @@
 						"type": "BinarySource",
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
-							"fileListPath": "exisitingfiles/input",
+							"fileListPath": "exisitingfiles/input/*",
 							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {

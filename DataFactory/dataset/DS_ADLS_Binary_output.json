@@ -12,9 +12,6 @@
 				"type": "AzureBlobFSLocation",
 				"folderPath": "output",
 				"fileSystem": "exisitingfiles"
-			},
-			"compression": {
-				"type": "gzip"
 			}
 		}
 	}

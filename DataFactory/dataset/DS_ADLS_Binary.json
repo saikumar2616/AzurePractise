@@ -9,12 +9,7 @@
 		"type": "Binary",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation",
-				"folderPath": "input",
-				"fileSystem": "exisitingfiles"
-			},
-			"compression": {
-				"type": "gzip"
+				"type": "AzureBlobFSLocation"
 			}
 		}
 	}
