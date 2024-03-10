@@ -3,7 +3,7 @@
 	"properties": {
 		"description": "EventBasedTrigger",
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
