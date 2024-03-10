@@ -1,0 +1,20 @@
+{
+	"name": "ADLSEventTrigger",
+	"properties": {
+		"description": "EventBasedTrigger",
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/exisitingfiles/blobs/input",
+			"blobPathEndsWith": ".csv",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/0fc4d8e8-8f21-4bd6-a59d-692b2a87791e/resourceGroups/SaiResourceGroup/providers/Microsoft.Storage/storageAccounts/sskdatalake",
+			"events": [
+				"Microsoft.Storage.BlobCreated",
+				"Microsoft.Storage.BlobDeleted"
+			]
+		}
+	}
+}
