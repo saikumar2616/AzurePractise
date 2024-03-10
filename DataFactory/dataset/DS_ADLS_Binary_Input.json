@@ -1,5 +1,5 @@
 {
-	"name": "DS_ADLS_Binary",
+	"name": "DS_ADLS_Binary_Input",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SaiDataLake",
@@ -9,7 +9,10 @@
 		"type": "Binary",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation"
+				"type": "AzureBlobFSLocation",
+				"fileName": "data.csv",
+				"folderPath": "input",
+				"fileSystem": "exisitingfiles"
 			}
 		}
 	}

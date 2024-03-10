@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "Input to Ouput",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -19,10 +19,7 @@
 						"type": "BinarySource",
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
-							"fileListPath": {
-								"value": "@concat('exisitingfiles','/',pipeline().parameters.SourcePath)",
-								"type": "Expression"
-							},
+							"recursive": true,
 							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {
@@ -40,7 +37,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DS_ADLS_Binary",
+						"referenceName": "DS_ADLS_Binary_Input",
 						"type": "DatasetReference"
 					}
 				],
@@ -52,16 +49,6 @@
 				]
 			}
 		],
-		"parameters": {
-			"SourcePath": {
-				"type": "string",
-				"defaultValue": "input"
-			},
-			"DestinationPath": {
-				"type": "string",
-				"defaultValue": "output"
-			}
-		},
 		"annotations": []
 	}
 }
