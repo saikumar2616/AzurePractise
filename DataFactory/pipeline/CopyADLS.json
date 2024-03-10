@@ -19,7 +19,10 @@
 						"type": "BinarySource",
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
-							"fileListPath": "exisitingfiles/input/*",
+							"fileListPath": {
+								"value": "@concat('exisitingfiles','/',pipeline().parameters.SourcePath)",
+								"type": "Expression"
+							},
 							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {
@@ -49,6 +52,16 @@
 				]
 			}
 		],
+		"parameters": {
+			"SourcePath": {
+				"type": "string",
+				"defaultValue": "input"
+			},
+			"DestinationPath": {
+				"type": "string",
+				"defaultValue": "output"
+			}
+		},
 		"annotations": []
 	}
 }
