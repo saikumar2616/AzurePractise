@@ -1,0 +1,19 @@
+{
+	"name": "DS_employees",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Sql",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"dbUserName": "ssk2616"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo.",
+			"table": "employees"
+		}
+	}
+}
