@@ -1,0 +1,46 @@
+{
+	"name": "Delete",
+	"properties": {
+		"activities": [
+			{
+				"name": "Delete files",
+				"type": "Delete",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "log",
+						"value": "Files being deleted"
+					}
+				],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "DS_ADLS_Binary_output",
+						"type": "DatasetReference"
+					},
+					"logStorageSettings": {
+						"linkedServiceName": {
+							"referenceName": "LS_ADLS",
+							"type": "LinkedServiceReference"
+						},
+						"path": "logging/adf/delete"
+					},
+					"enableLogging": true,
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"maxConcurrentConnections": 4,
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
+			}
+		],
+		"annotations": []
+	}
+}
