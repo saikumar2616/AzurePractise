@@ -1,0 +1,27 @@
+{
+	"name": "Execute Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute Copy Pipeline",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "DynamicCopy",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"fileName": "data"
+					}
+				}
+			}
+		],
+		"annotations": []
+	}
+}

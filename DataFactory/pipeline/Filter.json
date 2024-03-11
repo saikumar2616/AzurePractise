@@ -1,0 +1,45 @@
+{
+	"name": "Filter",
+	"properties": {
+		"activities": [
+			{
+				"name": "Filtering",
+				"type": "Filter",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.Array",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@greaterOrEquals(item(),4)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"Array": {
+				"type": "array",
+				"defaultValue": [
+					1,
+					4,
+					8,
+					2,
+					5,
+					6,
+					55,
+					22,
+					77,
+					66,
+					33,
+					48,
+					51,
+					62
+				]
+			}
+		},
+		"annotations": []
+	}
+}
