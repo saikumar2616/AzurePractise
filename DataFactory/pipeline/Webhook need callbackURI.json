@@ -1,0 +1,30 @@
+{
+	"name": "Webhook need callbackURI",
+	"properties": {
+		"activities": [
+			{
+				"name": "WebHook",
+				"type": "WebHook",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://dummy.restapiexample.com/api/v1/create",
+					"method": "POST",
+					"body": {
+						"id": 1,
+						"employee_name": "Tiger Nixon",
+						"employee_salary": 320800,
+						"employee_age": 61,
+						"profile_image": ""
+					},
+					"timeout": "00:1:00"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
