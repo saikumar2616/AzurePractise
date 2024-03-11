@@ -1,0 +1,66 @@
+{
+	"name": "Variables",
+	"properties": {
+		"activities": [
+			{
+				"name": "Setting Variable",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "parameter"
+					}
+				],
+				"typeProperties": {
+					"variableName": "PipeVar",
+					"value": {
+						"value": "@pipeline().parameters.PipelineParam",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Appending Variable",
+				"type": "AppendVariable",
+				"dependsOn": [],
+				"userProperties": [
+					{
+						"name": "FromPipe"
+					}
+				],
+				"typeProperties": {
+					"variableName": "PipeArray",
+					"value": {
+						"value": "@pipeline().parameters.pipelineParam",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"PipelineParam": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"PipeVar": {
+				"type": "String",
+				"defaultValue": "123"
+			},
+			"PipeArray": {
+				"type": "Array",
+				"defaultValue": [
+					1,
+					2,
+					3,
+					4
+				]
+			}
+		},
+		"annotations": []
+	}
+}
