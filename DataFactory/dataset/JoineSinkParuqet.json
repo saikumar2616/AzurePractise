@@ -1,0 +1,19 @@
+{
+	"name": "JoineSinkParuqet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ADLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "exisitingfiles"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
