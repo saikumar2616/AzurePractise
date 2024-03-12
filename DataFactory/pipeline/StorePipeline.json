@@ -1,0 +1,95 @@
+{
+	"name": "StorePipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "StoreDataFlow",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"StoreTransactions": {
+								"container": {
+									"value": "@pipeline().parameters.container",
+									"type": "Expression"
+								},
+								"filepath": {
+									"value": "@pipeline().parameters.inputFolder",
+									"type": "Expression"
+								},
+								"filename": {
+									"value": "@pipeline().parameters.transactionsFile",
+									"type": "Expression"
+								}
+							},
+							"StoreCustomers": {
+								"container": {
+									"value": "@pipeline().parameters.container",
+									"type": "Expression"
+								},
+								"filepath": {
+									"value": "@pipeline().parameters.inputFolder",
+									"type": "Expression"
+								},
+								"filename": {
+									"value": "@pipeline().parameters.customerFile",
+									"type": "Expression"
+								}
+							},
+							"sink1": {
+								"container": {
+									"value": "@pipeline().parameters.container",
+									"type": "Expression"
+								},
+								"filepath": {
+									"value": "@pipeline().parameters.outputFolder",
+									"type": "Expression"
+								},
+								"filename": "CustomerTransactions.csv"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"parameters": {
+			"container": {
+				"type": "string",
+				"defaultValue": "exisitingfiles"
+			},
+			"inputFolder": {
+				"type": "string",
+				"defaultValue": "input"
+			},
+			"outputFolder": {
+				"type": "string",
+				"defaultValue": "DataFlowOutput"
+			},
+			"customerFile": {
+				"type": "string",
+				"defaultValue": "store_customers.csv"
+			},
+			"transactionsFile": {
+				"type": "string",
+				"defaultValue": "store_transactions.csv"
+			}
+		},
+		"annotations": []
+	}
+}
