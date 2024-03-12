@@ -1,0 +1,45 @@
+{
+	"name": "JoinDataFlow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "EmployeesPaquet",
+						"type": "DatasetReference"
+					},
+					"name": "Employees"
+				},
+				{
+					"dataset": {
+						"referenceName": "DepartmentsParquet",
+						"type": "DatasetReference"
+					},
+					"name": "Departments"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "EmpJoinDept"
+				}
+			],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> Employees",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> Departments",
+				"Employees, Departments join(fuzzyCompare(ERROR_FUNCTION(''), ERROR_FUNCTION(''), 80.00),",
+				"     joinType:'inner',",
+				"     matchType:'fuzzy',",
+				"     ignoreSpaces: true,",
+				"     broadcast: 'off')~> EmpJoinDept"
+			]
+		}
+	}
+}

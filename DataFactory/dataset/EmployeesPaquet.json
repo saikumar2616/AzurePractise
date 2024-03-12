@@ -1,0 +1,20 @@
+{
+	"name": "EmployeesPaquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ADLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "employees",
+				"fileSystem": "exisitingfiles"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
