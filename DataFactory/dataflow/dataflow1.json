@@ -1,0 +1,29 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_CSV",
+						"type": "DatasetReference"
+					},
+					"name": "StoreTransactions"
+				},
+				{
+					"name": "StoreCustomers"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> StoreTransactions",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> StoreCustomers"
+			]
+		}
+	}
+}
