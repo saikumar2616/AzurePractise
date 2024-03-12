@@ -38,7 +38,7 @@
 				"     joinType:'inner',",
 				"     matchType:'fuzzy',",
 				"     ignoreSpaces: true,",
-				"     broadcast: 'off')~> EmpJoinDept"
+				"     broadcast: 'auto')~> EmpJoinDept"
 			]
 		}
 	}
