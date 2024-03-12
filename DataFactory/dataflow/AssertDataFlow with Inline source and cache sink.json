@@ -1,0 +1,70 @@
+{
+	"name": "AssertDataFlow with Inline source and cache sink",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "LS_ADLS",
+						"type": "LinkedServiceReference"
+					},
+					"name": "Slource"
+				}
+			],
+			"sinks": [
+				{
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "assert1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          {_c0} as short,",
+				"          Item_Identifier as string,",
+				"          Item_Weight as double,",
+				"          Item_Fat_Content as string,",
+				"          Item_Visibility as double,",
+				"          Item_Type as string,",
+				"          Item_MRP as double,",
+				"          Outlet_Identifier as string,",
+				"          Outlet_Establishment_Year as short,",
+				"          Outlet_Size as string,",
+				"          Outlet_Location_Type as string,",
+				"          Outlet_Type as string,",
+				"          Item_Outlet_Sales as double",
+				"     ),",
+				"     useSchema: false,",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'delimited',",
+				"     fileSystem: 'exisitingfiles',",
+				"     folderPath: 'input',",
+				"     fileName: '1987.csv',",
+				"     columnDelimiter: ',',",
+				"     escapeChar: '\\\\',",
+				"     quoteChar: '\\\"',",
+				"     columnNamesAsHeader: true) ~> Slource",
+				"Slource assert(expectTrue(isDouble(Item_Identifier), false, 'assert1', null, 'Checking for Double  type in column data'),",
+				"     expectUnique(Item_Identifier, false, 'assert2', null, 'checking the rowid to be unique key')) ~> assert1",
+				"assert1 derive(column1 = isError(),",
+				"          column2 = hasError()) ~> derivedColumn1",
+				"derivedColumn1 sink(validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     store: 'cache',",
+				"     format: 'inline',",
+				"     output: false,",
+				"     saveOrder: 1) ~> sink1"
+			]
+		}
+	}
+}
