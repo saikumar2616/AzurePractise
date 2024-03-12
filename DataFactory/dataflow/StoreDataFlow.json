@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "StoreDataFlow",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -12,6 +12,10 @@
 					"name": "StoreTransactions"
 				},
 				{
+					"dataset": {
+						"referenceName": "DS_CSV",
+						"type": "DatasetReference"
+					},
 					"name": "StoreCustomers"
 				}
 			],
@@ -22,7 +26,8 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> StoreTransactions",
 				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> StoreCustomers"
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> StoreCustomers"
 			]
 		}
 	}
