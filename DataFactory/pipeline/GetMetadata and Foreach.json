@@ -21,7 +21,7 @@
 						"parameters": {
 							"container": "exisitingfiles",
 							"filepath": "input",
-							"filename": "data.csv"
+							"filename": "*"
 						}
 					},
 					"fieldList": [
@@ -29,6 +29,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -50,7 +51,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Get Metadata for ADLS').output.itemName",
+						"value": "@activity('Get Metadata for ADLS').output",
 						"type": "Expression"
 					},
 					"activities": [
@@ -112,7 +113,7 @@
 										"container": "exisitingfiles",
 										"filepath": "input",
 										"filename": {
-											"value": "@item()",
+											"value": "@item().itemName",
 											"type": "Expression"
 										}
 									}
@@ -137,6 +138,11 @@
 				}
 			}
 		],
+		"variables": {
+			"file": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
