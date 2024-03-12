@@ -1,0 +1,31 @@
+{
+	"name": "FlowletSample",
+	"properties": {
+		"type": "Flowlet",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "input1"
+				},
+				{
+					"name": "output1"
+				}
+			],
+			"scriptLines": [
+				"input(output(",
+				"          id as string,",
+				"          name as string",
+				"     ),",
+				"     order: 0,",
+				"     allowSchemaDrift: true) ~> input1",
+				"input1 derive(CombinedCol = concat(id, name)) ~> derivedColumn1",
+				"derivedColumn1 output() ~> output1"
+			]
+		}
+	}
+}

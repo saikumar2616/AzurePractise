@@ -5,9 +5,9 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "EmployeesPaquet",
-						"type": "DatasetReference"
+					"linkedService": {
+						"referenceName": "LS_ADLS",
+						"type": "LinkedServiceReference"
 					},
 					"name": "Employees"
 				},
@@ -29,7 +29,9 @@
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
-				"     format: 'parquet') ~> Employees",
+				"     format: 'parquet',",
+				"     fileSystem: 'exisitingfiles',",
+				"     wildcardPaths:['departments']) ~> Employees",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
