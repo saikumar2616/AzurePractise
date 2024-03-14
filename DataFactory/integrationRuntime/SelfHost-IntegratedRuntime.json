@@ -1,6 +1,7 @@
 {
 	"name": "SelfHost-IntegratedRuntime",
 	"properties": {
-		"type": "SelfHosted"
+		"type": "SelfHosted",
+		"description": "Integration Run time to connect to on-prem resoures or any private network connections from Azure cloud"
 	}
 }
