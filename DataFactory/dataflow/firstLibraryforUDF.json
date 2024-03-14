@@ -7,7 +7,8 @@
 			"sinks": [],
 			"transformations": [],
 			"scriptLines": [
-				"if_else_UDF(string) as string = iif((i1 == 'abcd'), 'true_expression', iif((i1=='efgh'),'2nd true expression', 'false expression'))"
+				"if_else_UDF(string) as string = iif((i1 == 'abcd'), 'true_expression', iif((i1=='efgh'),'2nd true expression', 'false expression')),",
+				"somerandom(integer, integer) as double = atan(i1) + atan2(i1,i2) + acos(i1)"
 			]
 		}
 	}
