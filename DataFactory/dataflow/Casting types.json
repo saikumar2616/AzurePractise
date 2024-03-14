@@ -15,12 +15,22 @@
 			],
 			"sinks": [
 				{
+					"dataset": {
+						"referenceName": "DepartmentsParquet",
+						"type": "DatasetReference"
+					},
 					"name": "sink1"
+				},
+				{
+					"name": "CacheSink"
 				}
 			],
 			"transformations": [
 				{
 					"name": "cast1"
+				},
+				{
+					"name": "SplittingRecords"
 				}
 			],
 			"scriptLines": [
@@ -40,10 +50,23 @@
 				"          Date as date 'dd-mm-yyyy'",
 				"     ),",
 				"     errors: true) ~> cast1",
-				"cast1 sink(allowSchemaDrift: true,",
+				"cast1 split(!isError(),",
+				"     disjoint: false) ~> SplittingRecords@(goodRows, badRows)",
+				"SplittingRecords@goodRows sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     format: 'parquet',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> sink1",
+				"SplittingRecords@badRows sink(validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     store: 'cache',",
+				"     format: 'inline',",
+				"     output: false,",
+				"     saveOrder: 1) ~> CacheSink"
 			]
 		}
 	}
