@@ -1,0 +1,14 @@
+{
+	"name": "firstLibraryforUDF",
+	"properties": {
+		"type": "UDFLibrary",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"if_else_UDF(string) as string = iif((i1 == 'abcd'), 'true_expression', iif((i1=='efgh'),'2nd true expression', 'false expression'))"
+			]
+		}
+	}
+}
