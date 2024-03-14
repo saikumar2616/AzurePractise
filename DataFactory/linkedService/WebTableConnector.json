@@ -1,0 +1,15 @@
+{
+	"name": "WebTableConnector",
+	"properties": {
+		"annotations": [],
+		"type": "Web",
+		"typeProperties": {
+			"url": "https://www.careerpower.in/states-and-capitals-of-india.html",
+			"authenticationType": "Anonymous"
+		},
+		"connectVia": {
+			"referenceName": "SelfHost-IntegratedRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
