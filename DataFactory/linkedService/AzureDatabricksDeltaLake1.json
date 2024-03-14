@@ -20,6 +20,7 @@
 			},
 			"workspaceResourceId": "<workspace resource id>"
 		},
-		"annotations": []
+		"annotations": [],
+		"description": "Linked Service using Advanced Section where all parameters in Ui do not support dynamic parameters"
 	}
 }
