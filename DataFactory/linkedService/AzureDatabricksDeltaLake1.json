@@ -1,0 +1,25 @@
+{
+	"name": "AzureDatabricksDeltaLake1",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "AzureDatabricksDeltaLake",
+		"parameters": {
+			"clusterId": {
+				"type": "String"
+			},
+			"accessToken": {
+				"type": "String"
+			}
+		},
+		"typeProperties": {
+			"domain": "https://adb-xxxxxxxxx.xx.azuredatabricks.net",
+			"clusterId": "@{linkedService().clusterId}",
+			"accessToken": {
+				"type": "SecureString",
+				"value": "**********"
+			},
+			"workspaceResourceId": "<workspace resource id>"
+		},
+		"annotations": []
+	}
+}
