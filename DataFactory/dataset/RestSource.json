@@ -1,0 +1,12 @@
+{
+	"name": "RestSource",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PokemonRestService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
