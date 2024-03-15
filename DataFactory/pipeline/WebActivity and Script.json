@@ -41,7 +41,38 @@
 						{
 							"name": "Emp Insert",
 							"type": "Script",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "picture",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								},
+								{
+									"activity": "name",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								},
+								{
+									"activity": "salary",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								},
+								{
+									"activity": "age",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								},
+								{
+									"activity": "id",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -51,11 +82,8 @@
 							},
 							"userProperties": [],
 							"linkedServiceName": {
-								"referenceName": "LS_Sql",
-								"type": "LinkedServiceReference",
-								"parameters": {
-									"dbUserName": "ssk2616"
-								}
+								"referenceName": "ssk2616",
+								"type": "LinkedServiceReference"
 							},
 							"typeProperties": {
 								"scripts": [
@@ -109,12 +137,97 @@
 										],
 										"type": "Query",
 										"text": {
-											"value": "@INSERT INTO dbo.employees (id, employee_name, employee_salary,employee_age,profile_image)\nVALUES (item().id,item().employee_name,item().employee_salary,item().employee_age,item().profile_image);\n",
+											"value": "@concat('INSERT INTO dbo.employees',\n'(id, employee_name, employee_salary,employee_age,profile_image)',\n' VALUES',\n'(',\n'''@{variables(\"id\")}'',',\n'''@{variables(\"name\")}'',',\n'''@{variables(\"salary\")}'',',\n'''@{variables(\"age\")}''',\n'''@{variables(\"pic\")}''',\n')'\n)",
 											"type": "Expression"
 										}
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
+							}
+						},
+						{
+							"name": "picture",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "pic",
+								"value": {
+									"value": "@item().profile_image",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "name",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "name",
+								"value": {
+									"value": "@item().employee_name",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "salary",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "salary",
+								"value": {
+									"value": "@item().employee_salary",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "age",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "age",
+								"value": {
+									"value": "@item().employee_age",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "id",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "id",
+								"value": {
+									"value": "@item().id",
+									"type": "Expression"
+								}
 							}
 						}
 					]
@@ -122,8 +235,23 @@
 			}
 		],
 		"variables": {
-			"pipeParam": {
+			"item": {
+				"type": "Integer"
+			},
+			"name": {
 				"type": "String"
+			},
+			"age": {
+				"type": "Integer"
+			},
+			"salary": {
+				"type": "Integer"
+			},
+			"pic": {
+				"type": "String"
+			},
+			"id": {
+				"type": "Integer"
 			}
 		},
 		"annotations": []
