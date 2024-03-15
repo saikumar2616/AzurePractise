@@ -68,14 +68,44 @@
 											{
 												"name": "id",
 												"value": {
-													"value": "@item()",
+													"value": "@item().id",
 													"type": "Expression"
-												},
-												"direction": "Input"
+												}
+											},
+											{
+												"name": "employee_name",
+												"value": {
+													"value": "@item().employee_name",
+													"type": "Expression"
+												}
+											},
+											{
+												"name": "employee_age",
+												"value": {
+													"value": "@item().employee_age",
+													"type": "Expression"
+												}
+											},
+											{
+												"name": "employee_salary",
+												"value": {
+													"value": "@item().employee_salary",
+													"type": "Expression"
+												}
+											},
+											{
+												"name": "profile_image",
+												"value": {
+													"value": "@item().profile_image",
+													"type": "Expression"
+												}
 											}
 										],
 										"type": "Query",
-										"text": "INSERT INTO dbo.employees (id, employee_name, employee_salary,employee_age,profile_image)\nVALUES (@id,@employee_name,@employee_salary,@employee_age,@profile_image);\n"
+										"text": {
+											"value": "INSERT INTO dbo.employees (id, employee_name, employee_salary,employee_age,profile_image)\nVALUES (item().id,item().employee_name,item().employee_salary,item().employee_age,item().profile_image);\n",
+											"type": "Expression"
+										}
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
@@ -85,6 +115,11 @@
 				}
 			}
 		],
+		"variables": {
+			"pipeParam": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
