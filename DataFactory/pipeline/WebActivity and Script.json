@@ -1,0 +1,90 @@
+{
+	"name": "WebActivity and Script",
+	"properties": {
+		"activities": [
+			{
+				"name": "WebApp",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": "http://dummy.restapiexample.com/api/v1/employees"
+				}
+			},
+			{
+				"name": "ForEach",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "WebApp",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('WebApp').output.data",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Emp Insert",
+							"type": "Script",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "id"
+								}
+							],
+							"linkedServiceName": {
+								"referenceName": "LS_Sql",
+								"type": "LinkedServiceReference",
+								"parameters": {
+									"dbUserName": "ssk2616"
+								}
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"parameters": [
+											{
+												"name": "id",
+												"value": {
+													"value": "@item()",
+													"type": "Expression"
+												},
+												"direction": "Input"
+											}
+										],
+										"type": "Query",
+										"text": "INSERT INTO dbo.employees (id, employee_name, employee_salary,employee_age,profile_image)\nVALUES (@id,@employee_name,@employee_salary,@employee_age,@profile_image);\n"
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
+							}
+						}
+					]
+				}
+			}
+		],
+		"annotations": []
+	}
+}
