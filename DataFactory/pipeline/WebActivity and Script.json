@@ -109,7 +109,7 @@
 											},
 											{
 												"name": "script_employee_age",
-												"type": "String",
+												"type": "Int16",
 												"value": {
 													"value": "@variables('age')",
 													"type": "Expression"
@@ -118,9 +118,9 @@
 											},
 											{
 												"name": "script_employee_salary",
-												"type": "String",
+												"type": "Int16",
 												"value": {
-													"value": "@variables('age')",
+													"value": "@variables('salary')",
 													"type": "Expression"
 												},
 												"direction": "Input"
