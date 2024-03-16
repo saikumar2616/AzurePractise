@@ -1,0 +1,35 @@
+{
+	"name": "pipeline using CDCDataflow",
+	"properties": {
+		"activities": [
+			{
+				"name": "CDC",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "CDC_Dataflow",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine",
+					"continuationSettings": {
+						"customizedCheckpointKey": "882c89a8-3d22-491e-b756-cb2c250fece9"
+					}
+				}
+			}
+		],
+		"annotations": []
+	}
+}
