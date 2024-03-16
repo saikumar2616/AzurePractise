@@ -12,7 +12,19 @@
 					"name": "Employees"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "Employees_DW",
+						"type": "LinkedServiceReference"
+					},
+					"name": "CDCdestination",
+					"rejectedDataLinkedService": {
+						"referenceName": "LS_ADLS",
+						"type": "LinkedServiceReference"
+					}
+				}
+			],
 			"transformations": [],
 			"scriptLines": [
 				"source(allowSchemaDrift: true,",
@@ -21,7 +33,24 @@
 				"     netChanges: true,",
 				"     skipInitialLoad: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> Employees"
+				"     format: 'table') ~> Employees",
+				"Employees sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'employees_Dw',",
+				"     insertable: true,",
+				"     updateable: true,",
+				"     deletable: true,",
+				"     upsertable: true,",
+				"     keys:['id'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1,",
+				"     errorHandlingOption: 'allErrors',",
+				"     transactionCommit: 'batch',",
+				"     reportSuccessOnError: false) ~> CDCdestination"
 			]
 		}
 	}
