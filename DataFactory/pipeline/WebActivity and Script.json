@@ -90,46 +90,46 @@
 									{
 										"parameters": [
 											{
-												"name": "id",
+												"name": "script_id",
 												"type": "Int16",
 												"value": {
-													"value": "@item().id",
+													"value": "@variables('id')",
 													"type": "Expression"
 												},
 												"direction": "Input"
 											},
 											{
-												"name": "employee_name",
+												"name": "script_employee_name",
 												"type": "String",
 												"value": {
-													"value": "@item().employee_name",
+													"value": "@variables('name')",
 													"type": "Expression"
 												},
 												"direction": "Input"
 											},
 											{
-												"name": "employee_age",
+												"name": "script_employee_age",
 												"type": "String",
 												"value": {
-													"value": "@item().employee_age",
+													"value": "@variables('age')",
 													"type": "Expression"
 												},
 												"direction": "Input"
 											},
 											{
-												"name": "employee_salary",
+												"name": "script_employee_salary",
 												"type": "String",
 												"value": {
-													"value": "@item().employee_salary",
+													"value": "@variables('age')",
 													"type": "Expression"
 												},
 												"direction": "Input"
 											},
 											{
-												"name": "profile_image",
+												"name": "script_profile_image",
 												"type": "String",
 												"value": {
-													"value": "@item().profile_image",
+													"value": "@variables('pic')",
 													"type": "Expression"
 												},
 												"direction": "Input"
@@ -137,7 +137,7 @@
 										],
 										"type": "Query",
 										"text": {
-											"value": "@concat('INSERT INTO dbo.employees',\n'(id, employee_name, employee_salary,employee_age,profile_image)',\n' VALUES',\n'(',\n'''@{variables(\"id\")}'',',\n'''@{variables(\"name\")}'',',\n'''@{variables(\"salary\")}'',',\n'''@{variables(\"age\")}''',\n'''@{variables(\"pic\")}''',\n')'\n)",
+											"value": "\nINSERT INTO dbo.employees (id, employee_name, employee_salary,employee_age,profile_image) VALUES (@script_id,@script_employee_name,@script_employee_age,@script_employee_salary,@script_profile_image);",
 											"type": "Expression"
 										}
 									}
