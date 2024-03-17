@@ -1,0 +1,20 @@
+{
+	"name": "Aggregations",
+	"properties": {
+		"folder": {
+			"name": "Dedicated Sql Pool"
+		},
+		"content": {
+			"query": "--https://learn.microsoft.com/en-us/azure/synapse-analytics/get-started-analyze-sql-pool\n\nSELECT passenger_count as PassengerCount,\n      SUM(trip_distance) as SumTripDistance_miles,\n      AVG(trip_distance) as AvgTripDistance_miles\nINTO dbo.PassengerCountStats\nFROM  dbo.NYCTaxiTripSmall\nWHERE trip_distance > 0 AND passenger_count > 0\nGROUP BY passenger_count;\n\nSELECT * FROM dbo.PassengerCountStats\nORDER BY PassengerCount;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "DedicatedSqlPool",
+				"poolName": "DedicatedSqlPool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
