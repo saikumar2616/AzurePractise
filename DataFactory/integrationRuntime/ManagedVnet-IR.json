@@ -1,0 +1,32 @@
+{
+	"name": "ManagedVnet-IR",
+	"properties": {
+		"type": "Managed",
+		"description": "This is IR which uses a Virtual Network when need to execute any process using an endpoint",
+		"typeProperties": {
+			"computeProperties": {
+				"location": "South India",
+				"dataFlowProperties": {
+					"computeType": "General",
+					"coreCount": 8,
+					"timeToLive": 10,
+					"cleanup": false,
+					"customProperties": []
+				},
+				"copyComputeScaleProperties": {
+					"dataIntegrationUnit": 16,
+					"timeToLive": 5
+				},
+				"pipelineExternalComputeScaleProperties": {
+					"timeToLive": 60,
+					"numberOfPipelineNodes": 1,
+					"numberOfExternalNodes": 1
+				}
+			}
+		},
+		"managedVirtualNetwork": {
+			"type": "ManagedVirtualNetworkReference",
+			"referenceName": "default"
+		}
+	}
+}
