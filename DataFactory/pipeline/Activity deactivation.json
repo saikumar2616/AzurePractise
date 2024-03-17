@@ -19,6 +19,36 @@
 				"typeProperties": {
 					"enableStaging": false
 				}
+			},
+			{
+				"name": "Failed Message",
+				"type": "Fail",
+				"dependsOn": [
+					{
+						"activity": "Deactivting copy date",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": []
+			},
+			{
+				"name": "Successful",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Deactivting copy date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
 			}
 		],
 		"annotations": []
