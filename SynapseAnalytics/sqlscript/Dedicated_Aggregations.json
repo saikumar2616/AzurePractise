@@ -1,5 +1,5 @@
 {
-	"name": "Aggregations",
+	"name": "Dedicated_Aggregations",
 	"properties": {
 		"folder": {
 			"name": "Dedicated Sql Pool"
