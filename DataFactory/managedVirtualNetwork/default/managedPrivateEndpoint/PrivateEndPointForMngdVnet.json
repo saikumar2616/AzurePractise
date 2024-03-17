@@ -1,0 +1,7 @@
+{
+	"name": "PrivateEndPointForMngdVnet",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/0fc4d8e8-8f21-4bd6-a59d-692b2a87791e/resourceGroups/SaiResourceGroup/providers/Microsoft.Storage/storageAccounts/adfmngdvnetirstorage",
+		"groupId": "dfs"
+	}
+}
