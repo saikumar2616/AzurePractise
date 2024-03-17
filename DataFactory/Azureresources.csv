@@ -1,0 +1,11 @@
+﻿NAME,TYPE,LOCATION,
+"ADF_RG_Template","Template spec","East US"
+"adfmngdvnetirstorage","Storage account","South India"
+"emailGroup","Action group","Global"
+"FirstAlert","Metric alert rule","Global"
+"SaikaADFInstance","Data factory (V2)","South India"
+"SaiRGTemplate","Template spec","East US"
+"sample (ssk2616/sample)","SQL database","Central India"
+"ssk2616","SQL server","Central India"
+"sskdatalake","Storage account","South India"
+"sskVault","Key vault","South India"
