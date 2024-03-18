@@ -1,5 +1,5 @@
 {
-	"name": "Serverless_External Table",
+	"name": "Serverless_External Data Source",
 	"properties": {
 		"folder": {
 			"name": "Serverless"
