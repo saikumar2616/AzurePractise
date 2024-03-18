@@ -2,7 +2,7 @@
 	"name": "Types of External Tables",
 	"properties": {
 		"content": {
-			"query": "",
+			"query": "--https://learn.microsoft.com/en-us/azure/synapse-analytics/sql/develop-tables-external-tables?tabs=hadoop\n--Hadoop type:\n    -- type parameter in Data Source is HAdoop\n    -- Uses java tech to read from external files \n    --Available only in Dediated pools \n--Native type\n    -- type parameter in Data Source is not metioned\n    -- Uses Azure's native C++ tech to read from external files\n\n\n--Native external tables are good interms of performane as it takes less time to read the files when compared to Hadoop type extenal table",
 			"metadata": {
 				"language": "sql"
 			},
