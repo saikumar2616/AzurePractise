@@ -1,0 +1,20 @@
+{
+	"name": "Dedicated_External table",
+	"properties": {
+		"folder": {
+			"name": "Dedicated Sql Pool"
+		},
+		"content": {
+			"query": "--External tables an be created in both Serverless and Dediated Sql pools",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
