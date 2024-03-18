@@ -1,0 +1,20 @@
+{
+	"name": "Create table in Dedicated pool",
+	"properties": {
+		"folder": {
+			"name": "Dedicated Sql Pool"
+		},
+		"content": {
+			"query": "CREATE TABLE [dbo].[employees]\n(\n    empId int NOT NULL,\n    empName NVARCHAR(50),\n    gender NVARHAR(10)\n)\nWITH\n(\n    DISTRIBUTION = HASH (empId),\n    CLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n\nInsert into dbo.employees VALUES(1,'Sai','Male')\nInsert into dbo.employees VALUES(2,'Hari','Male')\nInsert into dbo.employees VALUES(3,'Narayana','FeMale')\nInsert into dbo.employees VALUES(4,'Koteshwaramma','FeMale')\n\n\nselect * from dbo.employees;\n\n\n\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "DedicatedSqlPool",
+				"poolName": "DedicatedSqlPool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
