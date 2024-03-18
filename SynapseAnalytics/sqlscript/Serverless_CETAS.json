@@ -1,0 +1,20 @@
+{
+	"name": "Serverless_CETAS",
+	"properties": {
+		"folder": {
+			"name": "Serverless"
+		},
+		"content": {
+			"query": "--CETAS creates external table and stores the data in the ADLS , Blob or HDFS\n--https://learn.microsoft.com/en-us/sql/t-sql/statements/create-external-table-as-select-transact-sql?view=sql-server-ver16&tabs=powershell\n\n\n--Managed Identity:\n--Every resource like ADF/Synapse will have an ID alled Managed ID and will be same as the resource name.\n--This an be forund in access blade of eah resource.\n\n--External objects will be under aa Shema only\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
