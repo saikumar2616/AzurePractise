@@ -1,0 +1,20 @@
+{
+	"name": "Serverless_External Table",
+	"properties": {
+		"folder": {
+			"name": "Serverless"
+		},
+		"content": {
+			"query": "--Details\n-- Serverless never stores the data . It just stores metadata like External tables.\n-- The data still exists in storgare like ADLS and T-sqls are performed everytime when you run a query\n-- Acts as a Logial Data Warehouse\n\n-- External Datasoure are like connection strings used for Data virtualization and data load using PolyBase\n-- https://learn.microsoft.com/en-us/sql/t-sql/statements/create-external-data-source-transact-sql?view=sql-server-ver16&tabs=dedicated\n\n\n\n-- credential is authentication information that is required to connect outside the Sql Server\n--https://learn.microsoft.com/en-us/sql/t-sql/statements/create-database-scoped-credential-transact-sql?view=sql-server-ver16\n\n\n\n-- Before creating a credential, the DB must have a master key to protect the credential\n-- https://learn.microsoft.com/en-us/sql/t-sql/statements/create-database-scoped-credential-transact-sql?view=sql-server-ver16\n\n\n\n\n\n\nCreate DATABASE demoDB;\n\nUse demoDB;\n-- Create a db master key if one does not already exist, using your own password.\nCREATE MASTER KEY ENCRYPTION BY PASSWORD='Hello@123';\n\n\n-- Create a database scoped credential.\nCREATE DATABASE SCOPED CREDENTIAL MyCredentials\nWITH IDENTITY = 'SHARED ACCESS SIGNATURE',\nSECRET = 'sv=2022-11-02&ss=bfqt&srt=s&sp=rwdlacupyx&se=2024-03-18T12:59:30Z&st=2024-03-18T04:59:30Z&spr=https&sig=5%2FjmnJDaekf8IelHjkRmtN2HAn6YJozYz6OaKeM2Ark%3D';\n\n\nCREATE EXTERNAL DATA SOURCE SaiExternalADLS\nWITH\n  (  LOCATION = 'https://sai2616initialstorage.dfs.core.windows.net/' ,\n    -- [ [ , ] CONNECTION_OPTIONS = '<key_value_pairs>'[,...]]\n     CREDENTIAL = MyCredentials \n    -- [ [ , ] PUSHDOWN = { ON | OFF } ]\n  );\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "demoDB",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
