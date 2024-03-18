@@ -5,7 +5,7 @@
 			"name": "Dedicated Sql Pool"
 		},
 		"content": {
-			"query": "--External tables an be created in both Serverless and Dediated Sql pools",
+			"query": "--External tables an be created in both Serverless and Dediated Sql pools.\n--use abfss path for dedicated pool and https path in serverless\n-- https://learn.microsoft.com/en-us/sql/t-sql/statements/create-table-as-select-azure-sql-data-warehouse?view=azure-sqldw-latest\n-- Hadoop type supported and performs process hadoop based type\n\n\nCREATE EXTERNAL TABLE census_external_table\n(\n    decennialTime varchar(20),\n    stateName varchar(100),\n    countyName varchar(100),\n    population int,\n    race varchar(50),\n    sex    varchar(10),\n    minAge int,\n    maxAge int\n)  \nWITH (\n    LOCATION = '/parquet/',\n    DATA_SOURCE = population_ds,  \n    FILE_FORMAT = census_file_format\n)\nGO\n\nSELECT TOP 1 * FROM census_external_table",
 			"metadata": {
 				"language": "sql"
 			},
