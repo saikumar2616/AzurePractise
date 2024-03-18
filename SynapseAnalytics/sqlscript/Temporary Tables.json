@@ -1,0 +1,17 @@
+{
+	"name": "Temporary Tables",
+	"properties": {
+		"content": {
+			"query": "--https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-tables-temporary\n--Available only for the session of dedicated or serverless pool(Query window are sepearte session)\n--Table name starts with #\n--gets stored system databses temp DB\n--can also the distribution \n--can be reated using CTAS statements\n\nselect * from tempDb.#tblPerson",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
