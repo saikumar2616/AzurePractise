@@ -1,5 +1,5 @@
 {
-	"name": "Notebook with params",
+	"name": "NotebookWithParams",
 	"properties": {
 		"nbformat": 4,
 		"nbformat_minor": 2,
@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "06935c47-48f3-4acd-8899-8f4dac1a9c4d"
+				"spark.autotune.trackingId": "79cf0757-4e75-4637-9af0-c97e635b91bf"
 			}
 		},
 		"metadata": {
