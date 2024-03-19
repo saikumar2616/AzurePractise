@@ -21,7 +21,8 @@
 					},
 					"parameters": {
 						"mode": {
-							"value": "append"
+							"value": "append",
+							"type": "string"
 						}
 					},
 					"snapshot": true,
