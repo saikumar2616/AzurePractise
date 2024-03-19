@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "ac31439a-3eea-49f0-83c9-48f92cb6fe2e"
+				"spark.autotune.trackingId": "1b0b9316-9f6e-4bc1-9d0e-f800718e585e"
 			}
 		},
 		"metadata": {
@@ -87,7 +87,8 @@
 					"**Pandas to read/write Azure Data Lake Storage Gen2 data in Apache Spark pool**\r\n",
 					"\r\n",
 					"https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/tutorial-use-pandas-spark-pool\r\n",
-					""
+					"\r\n",
+					"https://learn.microsoft.com/en-us/azure/synapse-analytics/quickstart-read-from-gen2-to-pandas-dataframe"
 				]
 			},
 			{
@@ -118,7 +119,7 @@
 					"data = pandas.DataFrame({'Name':['A', 'B', 'C', 'D'], 'ID':[20, 21, 19, 18]})\r\n",
 					"data.to_csv('abfss://filesystem@sai2616initialstorage.dfs.core.windows.net/write_data.csv')"
 				],
-				"execution_count": 5
+				"execution_count": 2
 			},
 			{
 				"cell_type": "code",
@@ -147,7 +148,7 @@
 					"data = pandas.DataFrame({'Name':['A', 'B', 'C', 'D'], 'ID':[20, 21, 19, 18]})\r\n",
 					"data.to_csv('abfss://filesystem/writeDataUsingFSSPEC.csv', storage_options = {'linked_service' :'LS_ADLSGen2'})"
 				],
-				"execution_count": 8
+				"execution_count": null
 			},
 			{
 				"cell_type": "markdown",
@@ -183,7 +184,7 @@
 					"val scala_df = spark.read.sqlanalytics(\"DedicatedSqlPool.dbo.NYCTaxiTripSmall\")\r\n",
 					"scala_df.show()"
 				],
-				"execution_count": 15
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -206,7 +207,7 @@
 					"#Does not wpork like this\r\n",
 					"display(scala_df)"
 				],
-				"execution_count": 16
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -228,7 +229,7 @@
 					"%%spark\r\n",
 					"scala_df.createOrReplaceTempView(\"PersonTableTemporary\")"
 				],
-				"execution_count": 17
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -251,7 +252,7 @@
 					"#now it works\r\n",
 					"spark.sql(\"select * from PersonTableTemporary\")"
 				],
-				"execution_count": 18
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
