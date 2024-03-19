@@ -861,7 +861,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "e54c7d6e-2fce-4157-85e8-d818489449e2"
+						"spark.autotune.trackingId": "13c9688b-357c-431d-bbea-6f5db73956d7"
 					}
 				},
 				"metadata": {
@@ -935,7 +935,7 @@
 							}
 						},
 						"source": [
-							"%run Notebook with params "
+							"%run Notebook with params {'first': 'Sai', 'second':'Kumar'}"
 						],
 						"outputs": [],
 						"execution_count": 22
@@ -965,7 +965,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "6fd7c364-1a1b-4a57-8399-f0e89a1b6151"
+						"spark.autotune.trackingId": "06935c47-48f3-4acd-8899-8f4dac1a9c4d"
 					}
 				},
 				"metadata": {
@@ -997,8 +997,53 @@
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {
+							"tags": [
+								"parameters"
+							]
+						},
 						"source": [
-							""
+							"first ='Hari'\r\n",
+							"second ='Krishna'   "
+						],
+						"outputs": [],
+						"execution_count": 2
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"full = first+second\r\n",
+							"print(\"Full is \", full)"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"    "
 						],
 						"outputs": [],
 						"execution_count": null
