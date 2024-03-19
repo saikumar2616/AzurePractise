@@ -8,8 +8,14 @@
 		"saisynapseworkspace-WorkspaceDefaultSqlServer_connectionString": {
 			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:saisynapseworkspace.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
 		},
+		"LS_ADLSGen2_accountKey": {
+			"value": ""
+		},
 		"saisynapseworkspace-WorkspaceDefaultStorage_properties_typeProperties_url": {
 			"value": "https://sai2616initialstorage.dfs.core.windows.net"
+		},
+		"LS_ADLSGen2_properties_typeProperties_url": {
+			"value": "https://sai2616initialstorage.dfs.core.windows.net/"
 		}
 	}
 }
