@@ -1,5 +1,5 @@
 {
-	"name": "iPythonWidgets",
+	"name": "ExitValue",
 	"properties": {
 		"nbformat": 4,
 		"nbformat_minor": 2,
@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "bac31e3b-d488-4f37-a001-d04209a2e9e6"
+				"spark.autotune.trackingId": "10bd788d-44d0-4d8b-a4bf-dd69ddb632fd"
 			}
 		},
 		"metadata": {
@@ -51,30 +51,10 @@
 			{
 				"cell_type": "code",
 				"source": [
-					"from ipywidgets import widgets\r\n",
-					"\r\n",
-					"lbl1 = widgets.Label(value='First Name')\r\n",
-					"display(lbl1)\r\n",
-					"txt1=widgets.Text(value='Enter your First Name')\r\n",
-					"display(txt1)\r\n",
-					"\r\n",
-					"lbl2 = widgets.Label(value='Second Name')\r\n",
-					"display(lbl2)\r\n",
-					"txt2=widgets.Text(value='Enter your Second Name')\r\n",
-					"display(txt2)\r\n",
-					"\r\n",
-					"btn = widgets.Button(description = 'Get Name')\r\n",
-					"display(btn)\r\n",
-					"\r\n",
-					"lblFullname = widgets.Label()\r\n",
-					"display(lblFullname)\r\n",
-					"\r\n",
-					"def getFullname(b):\r\n",
-					"    lblFullname.value= 'Full Name is : ' + txt1.value + ' ' + txt2.value\r\n",
-					"\r\n",
-					"btn.on_click(getFullname)"
+					"from notebookutils import mssparkutils\r\n",
+					"mssparkutils.notebook,exit(\"My name is Sai\")"
 				],
-				"execution_count": 11
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -90,7 +70,7 @@
 					}
 				},
 				"source": [
-					""
+					"print(\"What is this?\")"
 				],
 				"execution_count": null
 			}
