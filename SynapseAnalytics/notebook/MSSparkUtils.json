@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "a20de75e-dbc1-4416-8afe-8a0bae510e20"
+				"spark.autotune.trackingId": "05e0f824-775b-42cb-b54f-9d4699abcb26"
 			}
 		},
 		"metadata": {
@@ -84,7 +84,7 @@
 					}
 				},
 				"source": [
-					"<mark>**For this to work, the individual or the synapse workspace managed ID should be having teh stotrage contributor role on the ADLS**</mark>"
+					"<mark>**For this to work, the individual Azure Active Directory or the synapse workspace managed ID should be having teh stotrage contributor role on the ADLS**</mark>"
 				]
 			},
 			{
