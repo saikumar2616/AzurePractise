@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "05e0f824-775b-42cb-b54f-9d4699abcb26"
+				"spark.autotune.trackingId": "beba0423-3908-4ecf-84bb-0c5585606c51"
 			}
 		},
 		"metadata": {
@@ -84,7 +84,9 @@
 					}
 				},
 				"source": [
-					"<mark>**For this to work, the individual Azure Active Directory or the synapse workspace managed ID should be having teh stotrage contributor role on the ADLS**</mark>"
+					"<mark>**For this to work for any ADLS operation using abfss paths,**</mark> \r\n",
+					"1. the individual Azure Active Directory should have the stotrage contributor role on the ADLS when running Notebook directly\r\n",
+					"2. the synapse workspace managed ID should be having teh stotrage contributor role on the ADLS when running the notebook thru the pipeline"
 				]
 			},
 			{
