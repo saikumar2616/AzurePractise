@@ -1,0 +1,17 @@
+{
+	"name": "OPENROWSET",
+	"properties": {
+		"content": {
+			"query": "-- https://learn.microsoft.com/en-us/sql/t-sql/functions/openrowset-transact-sql?view=sql-server-ver16\n\n---doesnot require authentication when the ADLS is part of linked services in ADLS\n--- Else it requires authentication or should add the Storage Data ontributor Role for the Syanpse usr managed ID in the ADLS ",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
