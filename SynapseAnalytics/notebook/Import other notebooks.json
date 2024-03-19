@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "b1aff0f0-d9a4-4100-be57-0a17f6f878d2"
+				"spark.autotune.trackingId": "13f9771e-e910-40f4-baea-c57d9dc51035"
 			}
 		},
 		"metadata": {
@@ -88,7 +88,7 @@
 					}
 				},
 				"source": [
-					"%run Notebook with params "
+					"%run Notebook with params {'first': 'Sai', 'second':'Kumar'}"
 				],
 				"execution_count": 22
 			}
