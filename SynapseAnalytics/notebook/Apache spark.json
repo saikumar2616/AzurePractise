@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "4477d24b-c4b3-45a8-b763-18cd43fa84b0"
+				"spark.autotune.trackingId": "45734503-fe2e-4d8b-a838-c3d0317178ce"
 			}
 		},
 		"metadata": {
@@ -84,7 +84,8 @@
 					}
 				},
 				"source": [
-					"**Pandas to read/write Azure Data Lake Storage Gen2 data in Apache Spark po**\r\n",
+					"**Pandas to read/write Azure Data Lake Storage Gen2 data in Apache Spark pool**\r\n",
+					"\r\n",
 					"https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/tutorial-use-pandas-spark-pool\r\n",
 					""
 				]
