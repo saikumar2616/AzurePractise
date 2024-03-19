@@ -101,6 +101,12 @@
 								"referenceName": "Repartition",
 								"type": "NotebookReference"
 							},
+							"parameters": {
+								"mode": {
+									"value": "append",
+									"type": "string"
+								}
+							},
 							"snapshot": true,
 							"sparkPool": {
 								"referenceName": "SrvrlesSprkPool",
@@ -1177,7 +1183,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "3d6dec06-9056-462e-ba3e-7757fa70975e"
+						"spark.autotune.trackingId": "d6f025ee-4706-4724-9355-2d911ad48d28"
 					}
 				},
 				"metadata": {
