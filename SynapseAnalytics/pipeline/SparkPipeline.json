@@ -19,7 +19,13 @@
 						"referenceName": "Repartition",
 						"type": "NotebookReference"
 					},
-					"snapshot": true
+					"snapshot": true,
+					"sparkPool": {
+						"referenceName": "SrvrlesSprkPool",
+						"type": "BigDataPoolReference"
+					},
+					"executorSize": "Small",
+					"driverSize": "Small"
 				}
 			}
 		],
