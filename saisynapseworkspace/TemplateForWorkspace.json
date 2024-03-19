@@ -7,22 +7,22 @@
 			"metadata": "Workspace name",
 			"defaultValue": "saisynapseworkspace"
 		},
+		"LS_ADLSGen2_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLSGen2'"
+		},
 		"saisynapseworkspace-WorkspaceDefaultSqlServer_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'saisynapseworkspace-WorkspaceDefaultSqlServer'",
 			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:saisynapseworkspace.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
 		},
-		"LS_ADLSGen2_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'LS_ADLSGen2'"
+		"LS_ADLSGen2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://sai2616initialstorage.dfs.core.windows.net/"
 		},
 		"saisynapseworkspace-WorkspaceDefaultStorage_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://sai2616initialstorage.dfs.core.windows.net"
-		},
-		"LS_ADLSGen2_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://sai2616initialstorage.dfs.core.windows.net/"
 		}
 	},
 	"variables": {
@@ -76,6 +76,29 @@
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/notebooks/Repartition')]",
 				"[concat(variables('workspaceId'), '/bigDataPools/SrvrlesSprkPool')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/LS_ADLSGen2')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('LS_ADLSGen2_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('LS_ADLSGen2_accountKey')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
 			]
 		},
 		{
@@ -338,6 +361,49 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/Dedicated_IDENTITY to create Surrogatekey')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Dedicated Sql Pool"
+				},
+				"content": {
+					"query": "--Surrogate key is a unique identifier supported only for tables. so only for dediated pools\n--https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-tables-identity\n--60 distributions will be present for hash distribution\n--IDENTITY doesnt guaramtee the order of id\n--You can define the table using IDENTITY\n--IDENTITY column cannot be distribution key \n--IDENTITY column cannot be used when column is not and INT or BIGINT\n--IDENTITY column cannot be used for external tables\n\nCREATE TABLE dbo.T1\n(    C1 INT IDENTITY(1,1)    NOT NULL\n,    C2 VARCHAR(30)                NULL\n)\nWITH\n(   DISTRIBUTION = HASH(C2)\n,   CLUSTERED COLUMNSTORE INDEX\n)\n;\n\nINSERT INTO dbo.T1\nVALUES (NULL);\n\nINSERT INTO dbo.T1\nVALUES (NULL);\n\nSELECT *\nFROM dbo.T1;\n\nDBCC PDW_SHOWSPACEUSED('dbo.T1'); --> gives partition id for each record",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/OPENROWSET')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "-- https://learn.microsoft.com/en-us/sql/t-sql/functions/openrowset-transact-sql?view=sql-server-ver16\n\n---doesnot require authentication when the ADLS is part of linked services in ADLS\n--- Else it requires authentication or should add the Storage Data ontributor Role for the Syanpse usr managed ID in the ADLS ",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/SQL Authentication')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
@@ -486,6 +552,458 @@
 					"resultLimit": 5000
 				},
 				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Apache spark')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "SrvrlesSprkPool",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "ac31439a-3eea-49f0-83c9-48f92cb6fe2e"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/0fc4d8e8-8f21-4bd6-a59d-692b2a87791e/resourceGroups/SaiSynapseResourceGroup/providers/Microsoft.Synapse/workspaces/saisynapseworkspace/bigDataPools/SrvrlesSprkPool",
+						"name": "SrvrlesSprkPool",
+						"type": "Spark",
+						"endpoint": "https://saisynapseworkspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/SrvrlesSprkPool",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.3",
+						"nodeCount": 10,
+						"cores": 4,
+						"memory": 28
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-overview"
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-development-using-notebooks"
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"**Pandas to read/write Azure Data Lake Storage Gen2 data in Apache Spark pool**\r\n",
+							"\r\n",
+							"https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/tutorial-use-pandas-spark-pool\r\n",
+							""
+						]
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"#Read data file from URI of default Azure Data Lake Storage Gen2\r\n",
+							"\r\n",
+							"import pandas\r\n",
+							"\r\n",
+							"#read csv file\r\n",
+							"# df = pandas.read_csv('abfs[s]://file_system_name@account_name.dfs.core.windows.net/file_path')\r\n",
+							"df = pandas.read_csv('abfss://filesystem@sai2616initialstorage.dfs.core.windows.net/store_customers.csv',\r\n",
+							"storage_options={'acount_key':'6hs6nsCtjDZz0B91nGen/+kOxv1hsaaCPF5MF2aBdtjq2zDwjRGT2eRbYjuDGLImjzQnnYLLz2q9+AStT2U+rQ=='})\r\n",
+							"print(df)\r\n",
+							"\r\n",
+							"#write csv file\r\n",
+							"data = pandas.DataFrame({'Name':['A', 'B', 'C', 'D'], 'ID':[20, 21, 19, 18]})\r\n",
+							"data.to_csv('abfss://filesystem@sai2616initialstorage.dfs.core.windows.net/write_data.csv')"
+						],
+						"outputs": [],
+						"execution_count": 5
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"#Read data file from FSSPEC short URL of default Azure Data Lake Storage Gen2\r\n",
+							"##Account Key authentication is poonly supported fro Linked service to use this mechanism of reading as of now\r\n",
+							"\r\n",
+							"import pandas\r\n",
+							"\r\n",
+							"#read data file\r\n",
+							"df = pandas.read_csv('abfss://filesystem/store_customers.csv', storage_options ={'linked_service' :'LS_ADLSGen2'})\r\n",
+							"print(df)\r\n",
+							"\r\n",
+							"#write data file\r\n",
+							"data = pandas.DataFrame({'Name':['A', 'B', 'C', 'D'], 'ID':[20, 21, 19, 18]})\r\n",
+							"data.to_csv('abfss://filesystem/writeDataUsingFSSPEC.csv', storage_options = {'linked_service' :'LS_ADLSGen2'})"
+						],
+						"outputs": [],
+						"execution_count": 8
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"Use temp tables t referene data across multiple langues in a single notebook"
+						]
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"microsoft": {
+								"language": "scala"
+							}
+						},
+						"source": [
+							"%%spark \r\n",
+							"val scala_df = spark.read.sqlanalytics(\"DedicatedSqlPool.dbo.NYCTaxiTripSmall\")\r\n",
+							"scala_df.show()"
+						],
+						"outputs": [],
+						"execution_count": 15
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"microsoft": {
+								"language": "python"
+							}
+						},
+						"source": [
+							"%%pyspark\r\n",
+							"#Does not wpork like this\r\n",
+							"display(scala_df)"
+						],
+						"outputs": [],
+						"execution_count": 16
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"microsoft": {
+								"language": "scala"
+							}
+						},
+						"source": [
+							"%%spark\r\n",
+							"scala_df.createOrReplaceTempView(\"PersonTableTemporary\")"
+						],
+						"outputs": [],
+						"execution_count": 17
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"microsoft": {
+								"language": "python"
+							}
+						},
+						"source": [
+							"%%pyspark\r\n",
+							"#now it works\r\n",
+							"spark.sql(\"select * from PersonTableTemporary\")"
+						],
+						"outputs": [],
+						"execution_count": 18
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Import other notebooks')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "SrvrlesSprkPool",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "e54c7d6e-2fce-4157-85e8-d818489449e2"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/0fc4d8e8-8f21-4bd6-a59d-692b2a87791e/resourceGroups/SaiSynapseResourceGroup/providers/Microsoft.Synapse/workspaces/saisynapseworkspace/bigDataPools/SrvrlesSprkPool",
+						"name": "SrvrlesSprkPool",
+						"type": "Spark",
+						"endpoint": "https://saisynapseworkspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/SrvrlesSprkPool",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.3",
+						"nodeCount": 10,
+						"cores": 4,
+						"memory": 28,
+						"automaticScaleJobs": false
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"%run Repartition"
+						],
+						"outputs": [],
+						"execution_count": 19
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": false
+						},
+						"source": [
+							"display(df)"
+						],
+						"outputs": [],
+						"execution_count": 21
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"%run Notebook with params "
+						],
+						"outputs": [],
+						"execution_count": 22
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Notebook with params')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "SrvrlesSprkPool",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "6fd7c364-1a1b-4a57-8399-f0e89a1b6151"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/0fc4d8e8-8f21-4bd6-a59d-692b2a87791e/resourceGroups/SaiSynapseResourceGroup/providers/Microsoft.Synapse/workspaces/saisynapseworkspace/bigDataPools/SrvrlesSprkPool",
+						"name": "SrvrlesSprkPool",
+						"type": "Spark",
+						"endpoint": "https://saisynapseworkspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/SrvrlesSprkPool",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.3",
+						"nodeCount": 10,
+						"cores": 4,
+						"memory": 28
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"source": [
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					}
+				]
 			},
 			"dependsOn": []
 		},
@@ -806,423 +1324,6 @@
 			},
 			"dependsOn": [],
 			"location": "centralindia"
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/Dedicated_IDENTITY to create Surrogatekey')]",
-			"type": "Microsoft.Synapse/workspaces/sqlscripts",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"folder": {
-					"name": "Dedicated Sql Pool"
-				},
-				"content": {
-					"query": "--Surrogate key is a unique identifier supported only for tables. so only for dediated pools\n--https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-tables-identity\n--60 distributions will be present for hash distribution\n--IDENTITY doesnt guaramtee the order of id\n--You can define the table using IDENTITY\n--IDENTITY column cannot be distribution key \n--IDENTITY column cannot be used when column is not and INT or BIGINT\n--IDENTITY column cannot be used for external tables\n\nCREATE TABLE dbo.T1\n(    C1 INT IDENTITY(1,1)    NOT NULL\n,    C2 VARCHAR(30)                NULL\n)\nWITH\n(   DISTRIBUTION = HASH(C2)\n,   CLUSTERED COLUMNSTORE INDEX\n)\n;\n\nINSERT INTO dbo.T1\nVALUES (NULL);\n\nINSERT INTO dbo.T1\nVALUES (NULL);\n\nSELECT *\nFROM dbo.T1;\n\nDBCC PDW_SHOWSPACEUSED('dbo.T1'); --> gives partition id for each record",
-					"metadata": {
-						"language": "sql"
-					},
-					"currentConnection": {
-						"databaseName": "master",
-						"poolName": "Built-in"
-					},
-					"resultLimit": 5000
-				},
-				"type": "SqlQuery"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/OPENROWSET')]",
-			"type": "Microsoft.Synapse/workspaces/sqlscripts",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"content": {
-					"query": "-- https://learn.microsoft.com/en-us/sql/t-sql/functions/openrowset-transact-sql?view=sql-server-ver16\n\n---doesnot require authentication when the ADLS is part of linked services in ADLS\n--- Else it requires authentication or should add the Storage Data ontributor Role for the Syanpse usr managed ID in the ADLS ",
-					"metadata": {
-						"language": "sql"
-					},
-					"currentConnection": {
-						"databaseName": "master",
-						"poolName": "Built-in"
-					},
-					"resultLimit": 5000
-				},
-				"type": "SqlQuery"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/Apache spark')]",
-			"type": "Microsoft.Synapse/workspaces/notebooks",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"nbformat": 4,
-				"nbformat_minor": 2,
-				"bigDataPool": {
-					"referenceName": "SrvrlesSprkPool",
-					"type": "BigDataPoolReference"
-				},
-				"sessionProperties": {
-					"driverMemory": "28g",
-					"driverCores": 4,
-					"executorMemory": "28g",
-					"executorCores": 4,
-					"numExecutors": 2,
-					"conf": {
-						"spark.dynamicAllocation.enabled": "false",
-						"spark.dynamicAllocation.minExecutors": "2",
-						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "56e68a56-af42-402d-b04f-b0b9dd9badaf"
-					}
-				},
-				"metadata": {
-					"saveOutput": true,
-					"enableDebugMode": false,
-					"kernelspec": {
-						"name": "synapse_pyspark",
-						"display_name": "Synapse PySpark"
-					},
-					"language_info": {
-						"name": "python"
-					},
-					"a365ComputeOptions": {
-						"id": "/subscriptions/0fc4d8e8-8f21-4bd6-a59d-692b2a87791e/resourceGroups/SaiSynapseResourceGroup/providers/Microsoft.Synapse/workspaces/saisynapseworkspace/bigDataPools/SrvrlesSprkPool",
-						"name": "SrvrlesSprkPool",
-						"type": "Spark",
-						"endpoint": "https://saisynapseworkspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/SrvrlesSprkPool",
-						"auth": {
-							"type": "AAD",
-							"authResource": "https://dev.azuresynapse.net"
-						},
-						"sparkVersion": "3.3",
-						"nodeCount": 10,
-						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
-					},
-					"sessionKeepAliveTimeout": 30
-				},
-				"cells": [
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-overview"
-						]
-					},
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-development-using-notebooks"
-						]
-					},
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"**Pandas to read/write Azure Data Lake Storage Gen2 data in Apache Spark pool**\r\n",
-							"\r\n",
-							"https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/tutorial-use-pandas-spark-pool\r\n",
-							""
-						]
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"#Read data file from URI of default Azure Data Lake Storage Gen2\r\n",
-							"\r\n",
-							"import pandas\r\n",
-							"\r\n",
-							"#read csv file\r\n",
-							"# df = pandas.read_csv('abfs[s]://file_system_name@account_name.dfs.core.windows.net/file_path')\r\n",
-							"df = pandas.read_csv('abfss://filesystem@sai2616initialstorage.dfs.core.windows.net/store_customers.csv',\r\n",
-							"storage_options={'acount_key':'6hs6nsCtjDZz0B91nGen/+kOxv1hsaaCPF5MF2aBdtjq2zDwjRGT2eRbYjuDGLImjzQnnYLLz2q9+AStT2U+rQ=='})\r\n",
-							"print(df)\r\n",
-							"\r\n",
-							"#write csv file\r\n",
-							"data = pandas.DataFrame({'Name':['A', 'B', 'C', 'D'], 'ID':[20, 21, 19, 18]})\r\n",
-							"data.to_csv('abfss://filesystem@sai2616initialstorage.dfs.core.windows.net/write_data.csv')"
-						],
-						"outputs": [],
-						"execution_count": 5
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"#Read data file from FSSPEC short URL of default Azure Data Lake Storage Gen2\r\n",
-							"##Account Key authentication is poonly supported fro Linked service to use this mechanism of reading as of now\r\n",
-							"\r\n",
-							"import pandas\r\n",
-							"\r\n",
-							"#read data file\r\n",
-							"df = pandas.read_csv('abfss://filesystem/store_customers.csv', storage_options ={'linked_service' :'LS_ADLSGen2'})\r\n",
-							"print(df)\r\n",
-							"\r\n",
-							"#write data file\r\n",
-							"data = pandas.DataFrame({'Name':['A', 'B', 'C', 'D'], 'ID':[20, 21, 19, 18]})\r\n",
-							"data.to_csv('abfss://filesystem/writeDataUsingFSSPEC.csv', storage_options = {'linked_service' :'LS_ADLSGen2'})"
-						],
-						"outputs": [],
-						"execution_count": 8
-					},
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"Use temp tables t referene data across multiple langues in a single notebook"
-						]
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							},
-							"microsoft": {
-								"language": "scala"
-							}
-						},
-						"source": [
-							"%%spark \r\n",
-							"val scala_df = spark.read.sqlanalytics(\"DedicatedSqlPool.dbo.NYCTaxiTripSmall\")\r\n",
-							"scala_df.show()"
-						],
-						"outputs": [],
-						"execution_count": 15
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							},
-							"microsoft": {
-								"language": "python"
-							}
-						},
-						"source": [
-							"%%pyspark\r\n",
-							"#Does not wpork like this\r\n",
-							"display(scala_df)"
-						],
-						"outputs": [],
-						"execution_count": 16
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							},
-							"microsoft": {
-								"language": "scala"
-							}
-						},
-						"source": [
-							"%%spark\r\n",
-							"scala_df.createOrReplaceTempView(\"PersonTableTemporary\")"
-						],
-						"outputs": [],
-						"execution_count": 17
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							},
-							"microsoft": {
-								"language": "python"
-							}
-						},
-						"source": [
-							"%%pyspark\r\n",
-							"#now it works\r\n",
-							"spark.sql(\"select * from PersonTableTemporary\")"
-						],
-						"outputs": [],
-						"execution_count": 18
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							""
-						],
-						"outputs": [],
-						"execution_count": null
-					}
-				]
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/LS_ADLSGen2')]",
-			"type": "Microsoft.Synapse/workspaces/linkedServices",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('LS_ADLSGen2_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('LS_ADLSGen2_accountKey')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "AutoResolveIntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/Import other notebooks')]",
-			"type": "Microsoft.Synapse/workspaces/notebooks",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"nbformat": 4,
-				"nbformat_minor": 2,
-				"bigDataPool": {
-					"referenceName": "SrvrlesSprkPool",
-					"type": "BigDataPoolReference"
-				},
-				"sessionProperties": {
-					"driverMemory": "28g",
-					"driverCores": 4,
-					"executorMemory": "28g",
-					"executorCores": 4,
-					"numExecutors": 2,
-					"conf": {
-						"spark.dynamicAllocation.enabled": "false",
-						"spark.dynamicAllocation.minExecutors": "2",
-						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "3e356ea2-c22e-4bcc-8405-63495d654d56"
-					}
-				},
-				"metadata": {
-					"saveOutput": true,
-					"enableDebugMode": false,
-					"kernelspec": {
-						"name": "synapse_pyspark",
-						"display_name": "Synapse PySpark"
-					},
-					"language_info": {
-						"name": "python"
-					},
-					"a365ComputeOptions": {
-						"id": "/subscriptions/0fc4d8e8-8f21-4bd6-a59d-692b2a87791e/resourceGroups/SaiSynapseResourceGroup/providers/Microsoft.Synapse/workspaces/saisynapseworkspace/bigDataPools/SrvrlesSprkPool",
-						"name": "SrvrlesSprkPool",
-						"type": "Spark",
-						"endpoint": "https://saisynapseworkspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/SrvrlesSprkPool",
-						"auth": {
-							"type": "AAD",
-							"authResource": "https://dev.azuresynapse.net"
-						},
-						"sparkVersion": "3.3",
-						"nodeCount": 10,
-						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
-					},
-					"sessionKeepAliveTimeout": 30
-				},
-				"cells": [
-					{
-						"cell_type": "code",
-						"metadata": {},
-						"source": [
-							""
-						],
-						"outputs": [],
-						"execution_count": null
-					}
-				]
-			},
-			"dependsOn": []
 		}
 	]
 }
