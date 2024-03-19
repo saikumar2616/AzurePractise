@@ -1,0 +1,20 @@
+{
+	"name": "Dedicated_IDENTITY to create Surrogatekey",
+	"properties": {
+		"folder": {
+			"name": "Dedicated Sql Pool"
+		},
+		"content": {
+			"query": "--Surrogate key is a unique identifier supported only for tables. so only for dediated pools\n--https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-tables-identity\n--60 distributions will be present for hash distribution\n--IDENTITY doesnt guaramtee the order of id\n--You can define the table using IDENTITY\n--IDENTITY column cannot be distribution key \n--IDENTITY column cannot be used when column is not and INT or BIGINT\n--IDENTITY column cannot be used for external tables\n\nCREATE TABLE dbo.T1\n(    C1 INT IDENTITY(1,1)    NOT NULL\n,    C2 VARCHAR(30)                NULL\n)\nWITH\n(   DISTRIBUTION = HASH(C2)\n,   CLUSTERED COLUMNSTORE INDEX\n)\n;\n\nINSERT INTO dbo.T1\nVALUES (NULL);\n\nINSERT INTO dbo.T1\nVALUES (NULL);\n\nSELECT *\nFROM dbo.T1;\n\nDBCC PDW_SHOWSPACEUSED('dbo.T1'); --> gives partition id for each record",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
