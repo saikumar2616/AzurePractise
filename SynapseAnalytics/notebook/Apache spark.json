@@ -1,0 +1,171 @@
+{
+	"name": "Apache spark",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "SrvrlesSprkPool",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "4477d24b-c4b3-45a8-b763-18cd43fa84b0"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/0fc4d8e8-8f21-4bd6-a59d-692b2a87791e/resourceGroups/SaiSynapseResourceGroup/providers/Microsoft.Synapse/workspaces/saisynapseworkspace/bigDataPools/SrvrlesSprkPool",
+				"name": "SrvrlesSprkPool",
+				"type": "Spark",
+				"endpoint": "https://saisynapseworkspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/SrvrlesSprkPool",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.3",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-overview"
+				]
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-development-using-notebooks"
+				]
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"**Pandas to read/write Azure Data Lake Storage Gen2 data in Apache Spark po**\r\n",
+					"https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/tutorial-use-pandas-spark-pool\r\n",
+					""
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"#Read data file from URI of default Azure Data Lake Storage Gen2\r\n",
+					"\r\n",
+					"import pandas\r\n",
+					"\r\n",
+					"#read csv file\r\n",
+					"# df = pandas.read_csv('abfs[s]://file_system_name@account_name.dfs.core.windows.net/file_path')\r\n",
+					"df = pandas.read_csv('abfss://filesystem@sai2616initialstorage.dfs.core.windows.net/store_customers.csv',\r\n",
+					"storage_options={'acount_key':'6hs6nsCtjDZz0B91nGen/+kOxv1hsaaCPF5MF2aBdtjq2zDwjRGT2eRbYjuDGLImjzQnnYLLz2q9+AStT2U+rQ=='})\r\n",
+					"print(df)\r\n",
+					"\r\n",
+					"#write csv file\r\n",
+					"data = pandas.DataFrame({'Name':['A', 'B', 'C', 'D'], 'ID':[20, 21, 19, 18]})\r\n",
+					"data.to_csv('abfss://filesystem@sai2616initialstorage.dfs.core.windows.net/write_data.csv')"
+				],
+				"execution_count": 5
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"#Read data file from FSSPEC short URL of default Azure Data Lake Storage Gen2\r\n",
+					"##Account Key authentication is poonly supported fro Linked service to use this mechanism of reading as of now\r\n",
+					"\r\n",
+					"import pandas\r\n",
+					"\r\n",
+					"#read data file\r\n",
+					"df = pandas.read_csv('abfss://filesystem/store_customers.csv', storage_options ={'linked_service' :'LS_ADLSGen2'})\r\n",
+					"print(df)\r\n",
+					"\r\n",
+					"#write data file\r\n",
+					"data = pandas.DataFrame({'Name':['A', 'B', 'C', 'D'], 'ID':[20, 21, 19, 18]})\r\n",
+					"data.to_csv('abfss://filesystem/writeDataUsingFSSPEC.csv', storage_options = {'linked_service' :'LS_ADLSGen2'})"
+				],
+				"execution_count": 8
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					""
+				],
+				"execution_count": null
+			}
+		]
+	}
+}
