@@ -1,0 +1,20 @@
+{
+	"name": "Dedicated_CTAS",
+	"properties": {
+		"folder": {
+			"name": "Dedicated Sql Pool"
+		},
+		"content": {
+			"query": "--CTAS creates a physical table. So needs a storage. So dedicated sql pool only possible.\n--Physical tables are not possible in Serverless\n--https://learn.microsoft.com/en-us/sql/t-sql/statements/create-table-as-select-azure-sql-data-warehouse?view=azure-sqldw-latest\n\nCREATE TABLE [dbo].[employeesNew]\nWITH\n(\n    DISTRIBUTION = HASH (empName),\n    CLUSTERED COLUMNSTORE INDEX\n)\nselect * from dbo.employees\n\n\n\nCREATE TABLE [dbo].[employeesNew2]\nWITH\n(\n    DISTRIBUTION = ROUND_ROBIN,\n    CLUSTERED COLUMNSTORE INDEX\n)\nselect * from dbo.employees\n\n\n\n--- Select i to will not allow to ontrol the distribution and will always create ROUN_ROBIN distribution\nselect * \ninto dbo.employees3 \nfrom dbo.employees;\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

@@ -1,0 +1,20 @@
+{
+	"name": "Serverless_External File Fomat",
+	"properties": {
+		"folder": {
+			"name": "Serverless"
+		},
+		"content": {
+			"query": "-- External File Format  is the prerequisite for the External table creation as it has infer the layout of teh data referenced.\n--Parquet and Delimiuted Text are only supported(May increase in future)\n--https://learn.microsoft.com/en-us/sql/t-sql/statements/create-external-file-format-transact-sql?view=sql-server-ver16&tabs=delimited\n\nuse demoDB;\n--Create an external file format for PARQUET files.\nCREATE EXTERNAL FILE FORMAT ParquetFileFormat\nWITH (\n         FORMAT_TYPE = PARQUET\n      , DATA_COMPRESSION = \n        'org.apache.hadoop.io.compress.SnappyCodec' \n    );",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "demoDB",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

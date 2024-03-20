@@ -1,0 +1,17 @@
+{
+	"name": "Add as Admin",
+	"properties": {
+		"content": {
+			"query": "--Provide access\n\n--Step1: Add a new user using mail Id in Synapse Workspae (Acess control tab using owner role)\n--Step2: Add a new user using mail Id in Synapse Studio (Acess control tab using owner role)\n--Step3: Add a new user using mail Id in Blob storage (Provide owner and blob data contributor roles)\n--Step4: Execute below command to provide permissions to dedicated sql pool\n\nCREATE USER [sirigirisaikumar0@gmail.com] from EXTERNAL PROVIDER;\nEXEC sp_addrolemember 'db_owner','sirigirisaikumar0@gmail.com'",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "DedicatedSqlPool",
+				"poolName": "DedicatedSqlPool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

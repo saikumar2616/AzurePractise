@@ -1,0 +1,17 @@
+{
+	"name": "SQL Authentication",
+	"properties": {
+		"content": {
+			"query": "-- Admin accounts (found in Synapse workspace > properties)\n    -- 1. Server Admin --- user name and passowrd\n    --  2. Active Directory Admin -----inidviaul, AD Groups authentications\n\n    select * from sys.sql_logins;\n-- Serverless:\n-- https://learn.microsoft.com/en-us/azure/synapse-analytics/sql/sql-authentication?tabs=serverless\n-- https://www.serverlesssql.com/user-permissions-in-serverless-sql-pools-external-tables-vs-views/\n\n\n-- Dedicated Pool:\n-- https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-authentication",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

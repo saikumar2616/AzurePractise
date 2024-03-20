@@ -1,0 +1,20 @@
+{
+	"name": "Serverless_CETAS",
+	"properties": {
+		"folder": {
+			"name": "Serverless"
+		},
+		"content": {
+			"query": "--CETAS creates external table and stores the data in the ADLS , Blob or HDFS\n--https://learn.microsoft.com/en-us/sql/t-sql/statements/create-external-table-as-select-transact-sql?view=sql-server-ver16&tabs=powershell\n\n--Managed Identity:\n--Every resource like ADF/Synapse will have an ID alled Managed ID and will be same as the resource name.\n--This an be forund in access blade of eah resource.\n\n--External objects will be under a Schema only\ncreate schema NYCTAXI;\n\nuse demoDB;\n-- Example is based on AdventureWorks\nCREATE EXTERNAL TABLE NYCTAXI.PassengerCountStats\n    WITH (\n            LOCATION = 'filesystem/NYCTaxi/Aggdata/',\n            DATA_SOURCE = SaiExternalADLS,\n            FILE_FORMAT = ParquetFileFormat\n            ) AS\nSELECT PassengerCount,\n       SUM(TripDistanceMiles) as SumTripDistance,\n       AVG(TripDistanceMiles) as AvgTripDistance\n   FROM \n        OPENROWSET(\n        BULK 'https://sai2616initialstorage.dfs.core.windows.net/filesystem/NYCTripSmall.parquet',\n        FORMAT = 'PARQUET'\n    ) \n    AS [rows]\n        WHERE TripDistanceMiles > 0 AND PassengerCount > 0\n        GROUP BY PassengerCount\n        ORDER BY PassengerCount\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

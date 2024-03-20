@@ -1,0 +1,20 @@
+{
+	"name": "Dedicated_Create table",
+	"properties": {
+		"folder": {
+			"name": "Dedicated Sql Pool"
+		},
+		"content": {
+			"query": "-- Dataset file: \n-- https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbkI4bXRXb0x0UEdJUDBsOFY3Zm1lQUVhSWhJUXxBQ3Jtc0ttRGVzelVuWFBlbE94WjVsR21IUVdOb2dza045ZTZEeUpMOGM3dVVLRmNYQzc1dEk0UjRBTEdjV3dvcktaQXI0a00xY1VFcDBpT1VSMmh3S0JnS19yRDZQcUxoekJLZkJCSm14T0FxNVFNcVJfTWlGSQ&q=https%3A%2F%2Fazuresynapsestorage.blob.core.windows.net%2Fsampledata%2FNYCTaxiSmall%2FNYCTripSmall.parquet&v=xipW6s7hg2E\n--Example Link:\n-- https://learn.microsoft.com/en-us/azure/synapse-analytics/get-started-analyze-sql-pool\n\nIF NOT EXISTS (SELECT * FROM sys.objects O JOIN sys.schemas S ON O.schema_id = S.schema_id \nWHERE O.NAME = 'NYCTaxiTripSmall' AND O.TYPE = 'U' AND S.NAME = 'dbo')\nCREATE TABLE dbo.NYCTaxiTripSmall\n    (\n    [VendorID] bigint, \n    [store_and_fwd_flag] nvarchar(1) NULL, \n    [RatecodeID] float NULL, \n    [PULocationID] bigint NULL,  \n    [DOLocationID] bigint NULL, \n    [passenger_count] float NULL, \n    [trip_distance] float NULL, \n    [fare_amount] float NULL, \n    [extra] float NULL, \n    [mta_tax] float NULL, \n    [tip_amount] float NULL, \n    [tolls_amount] float NULL, \n    [ehail_fee] float NULL, \n    [improvement_surcharge] float NULL, \n    [total_amount] float NULL, \n    [payment_type] float NULL, \n    [trip_type] float NULL, \n    [congestion_surcharge] float  NULL\n    )\nWITH\n    (\n    DISTRIBUTION = ROUND_ROBIN,\n     CLUSTERED COLUMNSTORE INDEX\n     -- HEAP\n    )\nGO\n\nCOPY INTO dbo.NYCTaxiTripSmall\n(VendorID 1, store_and_fwd_flag 4, RatecodeID 5,  PULocationID 6 , DOLocationID 7,  \n passenger_count 8,trip_distance 9, fare_amount 10, extra 11, mta_tax 12, tip_amount 13, \n tolls_amount 14, ehail_fee 15, improvement_surcharge 16, total_amount 17, \n payment_type 18, trip_type 19, congestion_surcharge 20 )\nFROM 'https://sai2616initialstorage.dfs.core.windows.net/filesystem/NYCTripSmall.parquet'\nWITH\n(\n    FILE_TYPE = 'PARQUET'\n    ,MAXERRORS = 0\n    ,IDENTITY_INSERT = 'OFF'\n)",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "DedicatedSqlPool",
+				"poolName": "DedicatedSqlPool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

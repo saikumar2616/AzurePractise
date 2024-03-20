@@ -1,0 +1,37 @@
+{
+	"name": "SparkJObDefinition",
+	"properties": {
+		"targetBigDataPool": {
+			"referenceName": "SrvrlesSprkPool",
+			"type": "BigDataPoolReference"
+		},
+		"requiredSparkVersion": "3.3",
+		"language": "scala",
+		"scanFolder": false,
+		"jobProperties": {
+			"name": "SparkJObDefinition",
+			"className": "abfss://filesystem@sai2616initialstorage.dfs.core.windows.net/sparkcode/SparkJobConfigSample.py",
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "820351f0-7ebe-46f7-8568-f859c432c7fb",
+				"spark.synapse.context.sjdname": "SparkJObDefinition"
+			},
+			"args": [
+				"abfss://filesystem@sai2616initialstorage.dfs.core.windows.net/store_customers.csv",
+				"abfss://filesystem@sai2616initialstorage.dfs.core.windows.net/sparkcodeoutput/"
+			],
+			"jars": [],
+			"pyFiles": [
+				""
+			],
+			"files": [],
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2
+		}
+	}
+}
