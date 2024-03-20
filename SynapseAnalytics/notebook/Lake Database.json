@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "ac220ec9-996a-41fa-848b-f731d16f8943"
+				"spark.autotune.trackingId": "36afc222-f074-455d-bef5-55582d62669e"
 			}
 		},
 		"metadata": {
@@ -190,6 +190,42 @@
 					"--Gives details of table like INTERNAL or EXTERNAL"
 				],
 				"execution_count": 16
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "sparksql"
+					},
+					"collapsed": false
+				},
+				"source": [
+					"%%sql\r\n",
+					"CREATE TABLE sparkDB.store_customers\r\n",
+					"(\r\n",
+					"    CustomerID int,\r\n",
+					"    Age int,\r\n",
+					"    Salary int,\r\n",
+					"    Gender string,\r\n",
+					"    Country string\r\n",
+					")\r\n",
+					"using CSV\r\n",
+					"OPTIONS (header, 'true')\r\n",
+					"LOCATION'abfss://filesystem@sai2616initialstorage.dfs.core.windows.net/store_customers.csv'\r\n",
+					"--This is external as it is using the file ouside of the synapse workspace \r\n",
+					"--and data does not get deleted even table is deleted\r\n",
+					""
+				],
+				"execution_count": 20
 			},
 			{
 				"cell_type": "code",
