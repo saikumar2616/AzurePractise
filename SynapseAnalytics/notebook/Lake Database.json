@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "2601166b-1009-451a-a6fb-11c97835dfbe"
+				"spark.autotune.trackingId": "137c3e09-a223-46f9-9f65-1110d97fd37d"
 			}
 		},
 		"metadata": {
@@ -241,7 +241,8 @@
 					},
 					"microsoft": {
 						"language": "sparksql"
-					}
+					},
+					"collapsed": false
 				},
 				"source": [
 					"%%sql\r\n",
@@ -263,7 +264,58 @@
 					}
 				},
 				"source": [
-					""
+					"# --Delta format supports updates and deletes based on the parquet on the parquet\r\n",
+					"# Transation logs are maintained and it helps in logical updates and deletes\r\n",
+					"#Timetravel is also possible in the delta format"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "sparksql"
+					},
+					"collapsed": false
+				},
+				"source": [
+					"%%sql\r\n",
+					"CREATE TABLE sparkDB.store_customers\r\n",
+					"(\r\n",
+					"    CustomerID int,\r\n",
+					"    Age int,\r\n",
+					"    Salary int,\r\n",
+					"    Gender string,\r\n",
+					"    Country string\r\n",
+					")\r\n",
+					"using DELTA"
+				],
+				"execution_count": 22
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# The data created from delta format can be used in serverless sql pool also to query and get the data"
 				],
 				"execution_count": null
 			}
