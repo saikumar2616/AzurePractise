@@ -1,0 +1,7 @@
+﻿NAME,TYPE,LOCATION,
+"DedicatedSqlPool (saisynapseworkspace/DedicatedSqlPool)","Dedicated SQL pool","Central India"
+"sai2616initialstorage","Storage account","South India"
+"SaiSynapseResourceGroupTemplate","Template spec","East US"
+"saisynapseworkspace","Synapse workspace","Central India"
+"SrvrlesSprkPool (saisynapseworkspace/SrvrlesSprkPool)","Apache Spark pool","Central India"
+"sskKeyVault2616","Key vault","Central India"
