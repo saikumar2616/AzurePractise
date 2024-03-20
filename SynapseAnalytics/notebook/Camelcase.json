@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "160576e6-2ff3-4027-8b34-d0ab3d63cb9d"
+				"spark.autotune.trackingId": "26f4a2f8-22fa-4f8c-9500-86973235cee9"
 			}
 		},
 		"metadata": {
@@ -51,11 +51,12 @@
 			{
 				"cell_type": "code",
 				"source": [
+					"#from the uploaded requirements.txt file\r\n",
 					"import camelcase\r\n",
 					"c=camelCase.CamelCase()\r\n",
 					"c.hump('hello everyone')"
 				],
-				"execution_count": 1
+				"execution_count": 2
 			},
 			{
 				"cell_type": "code",
